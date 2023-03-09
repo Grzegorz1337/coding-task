@@ -2,11 +2,13 @@ package com.example.codingtask.services;
 
 
 import com.example.codingtask.dtos.MoneyDto;
+import com.example.codingtask.repositories.TransactionRepository;
 import com.example.codingtask.util.AwardingPointsResource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
@@ -16,11 +18,13 @@ import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class AwardingPointsServiceTests {
 
-    @Autowired
-    AwardingPointsService awardingPointsService;
+    @Mock
+    TransactionRepository transactionRepository;
+
+    AwardingPointsService awardingPointsService = new AwardingPointsService(transactionRepository);
     private static final Map<BigDecimal, Double> awardPointsResource = AwardingPointsResource.getThresholdsWithMultipliers();
     private final SortedSet<BigDecimal> sortedThresholds = new TreeSet<>(awardPointsResource.keySet());
 
