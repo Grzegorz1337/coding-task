@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public class AwardingPointsController {
     }
 
     @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody MoneyDto getAwardPointsFromMoneySpent(
             @Valid @RequestBody MoneyDto moneyDto
     ) {
@@ -43,5 +45,26 @@ public class AwardingPointsController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(SQLException.class)
+    public Map<String, String> handleSQLException(
+            SQLException ex
+    ) {
+        Map<String, String> errorDetail = new HashMap<>();
+        errorDetail.put("message", "application encountered error related to database");
+        return errorDetail;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public Map<String, String> handleInternalExceptions(
+            Exception ex
+    ) {
+        Map<String, String> errorDetail = new HashMap<>();
+        errorDetail.put("error message", ex.getMessage());
+        errorDetail.put("cause", "application encountered internal error");
+        return errorDetail;
     }
 }
