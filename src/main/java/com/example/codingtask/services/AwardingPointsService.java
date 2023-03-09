@@ -24,7 +24,6 @@ public class AwardingPointsService {
         moneyDto.setAwardPoints(this.calculateAwardPoints(moneyDto));
         moneyDto.setTransactionDate(new Date());
         transactionRepository.save(moneyDto.toTransaction());
-        System.out.println("Got db done");
         return moneyDto;
     }
 
