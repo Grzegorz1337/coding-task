@@ -17,8 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,7 +32,7 @@ public class AwardingPointsControllerTests {
     @Test
     @DisplayName("Should return bad request in case of invalid amount")
     void Should_ReturnBadRequest_When_AmountIsNotPositive() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/award-points")
+        mvc.perform(MockMvcRequestBuilders.post("/award-points")
                         .content("{ \"amount\":-100 }").contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest())
@@ -47,7 +46,7 @@ public class AwardingPointsControllerTests {
     @Test
     @DisplayName("Should return bad request in case of non-decimal amount")
     void Should_ReturnBadRequest_When_AmountIsNonDecimal() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/award-points")
+        mvc.perform(MockMvcRequestBuilders.post("/award-points")
                         .content("{ \"amount\":\"foo\" }").contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest())
@@ -63,13 +62,12 @@ public class AwardingPointsControllerTests {
     void Should_CallAwardingPointsService_When_AmountIsPositive() throws Exception {
         MoneyDto moneyDto = new MoneyDto();
         moneyDto.setAmount(BigDecimal.valueOf(10));
-        Double expectedValue = (double) 0;
-        given(awardingPointsService.calculateAwardPoints(moneyDto)).willReturn(expectedValue);
+        given(awardingPointsService.proceedAwardPoints(moneyDto)).willReturn(null);
 
-        MockHttpServletResponse result = mvc.perform(MockMvcRequestBuilders.get("/award-points")
+        MockHttpServletResponse result = mvc.perform(MockMvcRequestBuilders.post("/award-points")
                 .content("{ \"amount\":10 }").contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
 
-        assertEquals(result.getContentAsString(), String.valueOf(expectedValue));
+        assertNull(result.getContentType());
     }
 
 }

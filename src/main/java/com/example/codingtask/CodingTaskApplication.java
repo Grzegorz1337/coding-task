@@ -3,7 +3,7 @@ package com.example.codingtask;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication()
 public class CodingTaskApplication {
 
 	public static void main(String[] args) {

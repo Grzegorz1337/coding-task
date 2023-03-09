@@ -1,0 +1,35 @@
+version: '3.1'
+
+
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "9000:8080"
+  app:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE_NAME}?autoReconnect=true&useSSL=false&characterEncoding=utf8
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+volumes:
+  mysql-data:
+

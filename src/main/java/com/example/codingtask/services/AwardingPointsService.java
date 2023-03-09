@@ -2,20 +2,31 @@ package com.example.codingtask.services;
 
 
 import com.example.codingtask.dtos.MoneyDto;
+import com.example.codingtask.repositories.TransactionRepository;
 import com.example.codingtask.util.AwardingPointsProcessor;
 import com.example.codingtask.util.AwardingPointsResource;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @Service
 public class AwardingPointsService {
 
     private static final Map<BigDecimal, Double> awardPointsResource = AwardingPointsResource.getThresholdsWithMultipliers();
+    private final TransactionRepository transactionRepository;
+
+    public AwardingPointsService(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
+
+    public MoneyDto proceedAwardPoints(MoneyDto moneyDto){
+        moneyDto.setAwardPoints(this.calculateAwardPoints(moneyDto));
+        moneyDto.setTransactionDate(new Date());
+        transactionRepository.save(moneyDto.toTransaction());
+        System.out.println("Got db done");
+        return moneyDto;
+    }
 
     public Double calculateAwardPoints(MoneyDto moneyDto) {
         SortedSet<BigDecimal> sortedThresholds = getSortedThresholdKeysForAwardPoints();

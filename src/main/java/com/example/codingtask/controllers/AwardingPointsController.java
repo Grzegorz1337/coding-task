@@ -24,11 +24,11 @@ public class AwardingPointsController {
         this.awardingPointsService = awardingPointsService;
     }
 
-    @GetMapping("")
-    public @ResponseBody Double getAwardPointsFromMoneySpent(
+    @PostMapping("")
+    public @ResponseBody MoneyDto getAwardPointsFromMoneySpent(
             @Valid @RequestBody MoneyDto moneyDto
     ) {
-        return awardingPointsService.calculateAwardPoints(moneyDto);
+        return awardingPointsService.proceedAwardPoints(moneyDto);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
