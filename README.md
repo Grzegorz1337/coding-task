@@ -1,8 +1,48 @@
-# coding-task
+## coding-task
 Coding task related to recruitment process
 
+# Perquisitions
+[Docker engine](https://www.docker.com/products/docker-desktop/)
 
+# To download and run this project, please follow these steps
 
+1. git clone https://github.com/Grzegorz1337/coding-task.git
+2. cd coding-task
+3. docker-compose build
+4. docker-compose up
+
+**Application info**
+
+Coding task will run on port 8080. Available route mapping is only enabled for /award-points using POST
+When called, expects JSON in format:
+
+'''
+{
+    "amount":{floating point number}
+}
+'''
+
+And returns JSON in format:
+'''
+{
+    "amount": {floating point number}, 
+    "awardPoints": {number},
+    "transactionDate": {date of transaction}
+}
+'''
+
+When called, it will also create a database entry for this purchase.
+
+**To browse/analyze/delete/export data**
+Use included in docker-compose adminer, available by default on port 9000
+
+**Tests**
+
+Tests are executed automatically with building application docker image, however those can be executed
+with command
+'''
+./gradlew build
+'''
 
 
 For thresholds I've been thinking about creating yaml resource and later mapping it into
