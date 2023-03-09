@@ -1,10 +1,10 @@
-## coding-task
+# coding-task
 Coding task related to recruitment process
 
-# Perquisitions
+## Perquisitions
 [Docker engine](https://www.docker.com/products/docker-desktop/)
 
-# To download and run this project, please follow these steps
+## To download and run this project, please follow these steps
 
 1. git clone https://github.com/Grzegorz1337/coding-task.git
 2. cd coding-task
@@ -13,7 +13,7 @@ Coding task related to recruitment process
 5. docker-compose build
 6. docker-compose up
 
-**Application info**
+## Application info
 
 Coding task will run on port 8080. Available route mapping is only enabled for /award-points using POST
 When called, expects JSON in format:
@@ -35,10 +35,12 @@ And returns JSON in format:
 
 When called, it will also create a database entry for this purchase.
 
-**To browse/analyze/delete/export data**
-Use included in docker-compose adminer, available by default on port 9000
+## To browse/analyze/delete/export data 
 
-**Tests**
+Use included in docker-compose adminer, available by default on port 9000.
+
+
+## Tests
 
 Tests are executed automatically with building application docker image, however those can be executed
 with command
