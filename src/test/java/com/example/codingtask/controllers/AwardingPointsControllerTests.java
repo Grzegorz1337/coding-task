@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,7 +16,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,12 +47,12 @@ public class AwardingPointsControllerTests {
     @DisplayName("Should return bad request in case of non-decimal amount")
     void Should_ReturnBadRequest_When_AmountIsNonDecimal() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/award-points")
-                        .content("{ \"amount\":\"foo\" }").contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"amount\":\"-100\" }").contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(
                         result -> assertTrue(
-                                result.getResolvedException() instanceof HttpMessageNotReadableException
+                                result.getResolvedException() instanceof MethodArgumentNotValidException
                         )
                 );
     }
